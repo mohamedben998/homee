@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة المعدل الجامعي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kDXDCe9WSwsMaMachIYvQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+        /* Custom scrollbar for webkit browsers */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 20px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background-color: rgba(255,255,255,0.2);
+        }
+        /* Primary color definition for Tailwind */
+        .tailwind-primary { color: #007bff; } /* Light mode primary */
+        .dark .tailwind-primary { color: #3b82f6; } /* Dark mode primary */
+        .bg-tailwind-primary { background-color: #007bff; }
+        .dark .bg-tailwind-primary { background-color: #3b82f6; }
+        .border-tailwind-primary { border-color: #007bff; }
+        .dark .border-tailwind-primary { border-color: #3b82f6; }
+        .ring-tailwind-primary { ring-color: #007bff; }
+        .dark .ring-tailwind-primary { ring-color: #3b82f6; }
+
+        .focus-ring-primary {
+          @apply focus:ring-2 focus:ring-opacity-50;
+        }
+        .light .focus-ring-primary {
+           @apply focus:ring-[#007bff];
+        }
+        .dark .focus-ring-primary {
+            @apply focus:ring-[#3b82f6];
+        }
+         /* Success color */
+        .tailwind-success { color: #28a745; }
+        .bg-tailwind-success { background-color: #28a745; }
+        .border-tailwind-success { border-color: #28a745; }
+        .bg-tailwind-success-soft { background-color: rgba(40, 167, 69, 0.2); } /* color-mix(in srgb, var(--success-color) 20%, transparent) */
+
+        /* Danger color */
+        .tailwind-danger { color: #dc3545; }
+        .bg-tailwind-danger { background-color: #dc3545; }
+        .border-tailwind-danger { border-color: #dc3545; }
+        .bg-tailwind-danger-soft { background-color: rgba(220, 53, 69, 0.2); }
+
+        /* Debt color */
+        .tailwind-debt { color: #17a2b8; }
+        .bg-tailwind-debt { background-color: #17a2b8; }
+        .border-tailwind-debt { border-color: #17a2b8; }
+        .bg-tailwind-debt-soft { background-color: rgba(23, 162, 184, 0.2); }
+        
+        /* Warning color */
+        .tailwind-warning { color: #ffc107; }
+        .bg-tailwind-warning { background-color: #ffc107; }
+        .border-tailwind-warning { border-color: #ffc107; }
+        .bg-tailwind-warning-soft { background-color: rgba(255, 193, 7, 0.2); }
+        
+        /* Shake animation */
+        @keyframes shake {
+          10%, 90% { transform: translate3d(-1px, 0, 0); }
+          20%, 80% { transform: translate3d(2px, 0, 0); }
+          30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+          40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+        .shake {
+          animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+    </style>
+    <script>
+      tailwind.config = {
+        darkMode: 'class', // or 'media'
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                DEFAULT: '#007bff', // Light mode primary
+                dark: '#3b82f6',    // Dark mode primary
+              },
+              success: {
+                DEFAULT: '#28a745',
+                soft: 'rgba(40, 167, 69, 0.2)',
+              },
+              danger: {
+                DEFAULT: '#dc3545',
+                soft: 'rgba(220, 53, 69, 0.2)',
+              },
+              debt: {
+                DEFAULT: '#17a2b8',
+                soft: 'rgba(23, 162, 184, 0.2)',
+              },
+              warning: {
+                DEFAULT: '#ffc107',
+                soft: 'rgba(255, 193, 7, 0.2)',
+              },
+              // Surface colors
+              surface: {
+                DEFAULT: '#ffffff', // light
+                dark: '#1f2937',  // dark
+              },
+              // Background colors
+              background: {
+                DEFAULT: '#f4f7f9', // light
+                dark: '#111827',  // dark
+              },
+              // Text colors
+              content: { // Renamed from text to avoid conflict with tailwind's text utilities
+                DEFAULT: '#212529', // light
+                dark: '#f9fafb',  // dark
+              },
+              muted: {
+                DEFAULT: '#6c757d', // light
+                dark: '#9ca3af',  // dark
+              },
+              // Border colors
+              stroke: { // Renamed from border to avoid conflict
+                DEFAULT: '#e9ecef', // light
+                dark: '#374151',  // dark
+              }
+            },
+            fontFamily: {
+              tajawal: ['Tajawal', 'sans-serif'],
+            },
+            boxShadow: {
+              DEFAULT: '0 10px 30px rgba(0, 0, 0, 0.07)',
+              dark: '0 10px 30px rgba(0, 0, 0, 0.2)',
+              strong: '0 20px 40px rgba(0, 0, 0, 0.1)',
+              dark_strong: '0 20px 40px rgba(0, 0, 0, 0.25)',
+            },
+            borderRadius: {
+              'xl': '20px', // For choice cards, main settings link
+              'lg-custom': '15px', // For setting items, modal content
+              'md-custom': '12px', // For module items
+              'sm-custom': '10px', // For form controls, buttons
+              'xs-custom': '8px', // For module options menu, setting option
+            }
+          }
+        }
+      }
+    </script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="font-tajawal bg-background dark:bg-background-dark text-content dark:text-content-dark transition-colors duration-300 overflow-x-hidden">
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root" class="app-container relative w-full min-h-screen"></div>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel" data-type="module" data-presets="react,typescript" src="./index.tsx"></script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>

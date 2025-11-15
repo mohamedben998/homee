@@ -1,0 +1,6 @@
+{
+  "name": "y of University GPA Calculator LMD",
+  "description": "A React application to help Algerian university students (LMD system) calculate their semester and annual GPA, manage modules, and view results with support for multiple languages and themes.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
